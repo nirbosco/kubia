@@ -267,7 +267,8 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 
 const state = {
   code:null, room:null, seq:-1, screen:null, audience:"teachers", dice:"virtual",
-  spinX:-24, spinY:32, channel:null, busy:false, animating:false
+  spinX:-24, spinY:32, channel:null, busy:false, animating:false,
+  qtext:new Map(), answered:0
 };
 
 /* ===== עזרים ===== */
@@ -346,9 +347,16 @@ async function enterRoom(code, known){
   $("#chip").classList.remove("hidden");
   $("#die").innerHTML = dieFaces();
   buildPhysical();
+
+  // קאש שאלות: מאפשר להציג את הקלף מיד מהשידור, בלי סבב נוסף לשרת
+  try{
+    const qs = await rpc("kubia_room_questions",{p_code:code});
+    (qs||[]).forEach(q => state.qtext.set(q.id, q.text));
+  }catch(e){}
+
   subscribe(s.id);
   apply(s, true);
-  setInterval(()=>{ if(state.code) rpc("kubia_get_state",{p_code:state.code}).then(x=>x&&apply(x)).catch(()=>{}); }, 25000);
+  setInterval(()=>{ if(state.code) pull(); }, 25000);
 }
 
 /* ===== סנכרון ===== */
@@ -357,7 +365,19 @@ function subscribe(roomId){
   const ch = sb.channel("kubia:"+roomId, { config:{ presence:{ key: Math.random().toString(36).slice(2) } } });
   ch.on("postgres_changes",
       { event:"UPDATE", schema:"public", table:"kubia_rooms", filter:"id=eq."+roomId },
-      payload => { pull(); })
+      payload => {
+        const r = payload && payload.new;
+        if(!r || typeof r.seq !== "number"){ pull(); return; }
+        // אם השאלה אינה בקאש (נוספה למאגר אחרי שנכנסנו), נופלים לשליפה מהשרת
+        if(r.current_question && !state.qtext.has(r.current_question)){ pull(); return; }
+        apply({
+          id:r.id, code:r.code, audience:r.audience, dice_mode:r.dice_mode,
+          screen:r.screen, category:r.current_category, question_id:r.current_question,
+          question_text: r.current_question ? state.qtext.get(r.current_question) : null,
+          seq:r.seq, answered_count: state.answered
+        });
+        if(r.screen === "table") pull(); // רענון מונה הנענו, לא חוסם
+      })
     .on("presence",{event:"sync"},()=>{
       const n = Object.keys(ch.presenceState()).length;
       $("#lobby-count").textContent = "מחוברים: " + n;
@@ -372,11 +392,15 @@ async function pull(){
 
 /* ===== החלת מצב, כולל אנימציות ===== */
 function apply(s, initial){
-  if(!initial && s.seq <= state.seq) return;
+  if(typeof s.answered_count === "number") state.answered = s.answered_count;
+  if(!initial && s.seq <= state.seq){
+    // אותו מצב, רק רענון מונה
+    $("#chip").textContent = "חדר " + s.code + (state.answered ? " · נענו " + state.answered : "");
+    return;
+  }
   const prevScreen = state.screen;
-  const prevSeq = state.seq;
   state.room=s; state.seq=s.seq; state.screen=s.screen;
-  $("#chip").textContent = "חדר " + s.code + (s.answered_count ? " · נענו " + s.answered_count : "");
+  $("#chip").textContent = "חדר " + s.code + (state.answered ? " · נענו " + state.answered : "");
   $("#pad-virtual").style.display = s.dice_mode==="physical" ? "none":"flex";
   $("#pad-physical").style.display = s.dice_mode==="physical" ? "grid":"none";
   $("#btn-roll").style.display = s.dice_mode==="physical" ? "none":"block";
