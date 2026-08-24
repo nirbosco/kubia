@@ -123,6 +123,33 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
 .qf-3,.qf-4{background:var(--purple)} .qf-5{background:var(--advot)} .qf-6{background:var(--light)}
 .actions{display:flex;flex-direction:column;gap:9px;width:min(80vw,320px)}
 
+/* תפריט וכפתור */
+.headright{display:flex;align-items:center;gap:8px}
+.menubtn{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;cursor:pointer;flex:none;padding:0}
+.menubtn span{width:16px;height:2px;border-radius:2px;background:var(--blue);display:block}
+.menubtn.hidden{display:none}
+.sheet-bg{position:fixed;inset:0;background:rgba(10,19,48,.42);opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.sheet-bg.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;z-index:81;
+  padding:10px 16px 22px;transform:translateY(102%);transition:transform .3s cubic-bezier(.3,.8,.3,1);
+  max-width:520px;margin:0 auto;box-shadow:0 -8px 30px rgba(10,19,48,.18)}
+.sheet.on{transform:translateY(0)}
+.sheet-grip{width:44px;height:4px;border-radius:99px;background:var(--line);margin:4px auto 12px}
+.sheet-code{text-align:center;font-size:15px;color:var(--muted);margin-bottom:12px}
+.sheet-code b{color:var(--blue);font-size:22px;letter-spacing:3px;direction:ltr;display:inline-block;vertical-align:middle;margin-inline-start:6px}
+.sheet-item{display:block;width:100%;text-align:right;font-family:inherit;background:none;border:none;
+  border-top:1px solid #f0f0f4;padding:14px 6px;cursor:pointer;color:var(--ink)}
+.sheet-item strong{display:block;font-size:16px;font-weight:600}
+.sheet-item small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.sheet-item.danger strong{color:#c0392b}
+.sheet-close{width:100%;margin-top:14px;font-family:inherit;font-size:16px;font-weight:600;padding:14px;
+  border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.die{cursor:pointer}
+.tap-hint{font-size:13px;color:var(--muted);margin-top:-8px}
+/* מסך סיום */
+.endwrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.endnum{font-size:60px;font-weight:800;color:var(--blue);line-height:1}
 #toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;
   padding:13px 22px;border-radius:999px;font-size:14.5px;font-weight:500;opacity:0;transition:.35s;pointer-events:none;z-index:99;max-width:88vw;text-align:center}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -139,8 +166,27 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
 
 <header class="top">
   <div class="brand"><span class="dot"></span>עבר · הווה · עתיד</div>
-  <div class="roomchip hidden" id="chip"></div>
+  <div class="headright">
+    <div class="roomchip hidden" id="chip"></div>
+    <button class="menubtn hidden" id="menubtn" onclick="openMenu()" aria-label="תפריט המשחק">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
+
+<!-- תפריט המשחק -->
+<div class="sheet-bg" id="sheet-bg" onclick="closeMenu()"></div>
+<div class="sheet" id="sheet" role="dialog" aria-label="תפריט המשחק">
+  <div class="sheet-grip"></div>
+  <div class="sheet-code" id="sheet-code"></div>
+  <button class="sheet-item" onclick="shareLink()"><strong>הזמנת משתתפים</strong><small>שליחת קישור שנכנס ישר לחדר</small></button>
+  <button class="sheet-item" onclick="copyLink()"><strong>העתקת הקישור</strong><small id="link-preview"></small></button>
+  <button class="sheet-item" onclick="showQR()"><strong>הצגת קוד QR</strong><small>למי שסורק במקום</small></button>
+  <button class="sheet-item" onclick="toLobby()"><strong>עצירה וחזרה ללובי</strong><small>המשחק ממתין, ואפשר לצרף עוד אנשים</small></button>
+  <button class="sheet-item danger" onclick="endGame()"><strong>סיום המשחק</strong><small>נסגר אצל כל המשתתפים</small></button>
+  <button class="sheet-item" onclick="leaveGame()"><strong>יציאה מהמשחק</strong><small>רק מהמכשיר הזה, המשחק ממשיך</small></button>
+  <button class="sheet-close" onclick="closeMenu()">סגירה</button>
+</div>
 
 <main>
   <!-- בית -->
@@ -174,6 +220,15 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
         <span class="tick"></span><span>קובייה אמיתית בחדר<small>מקישים על הספרה שיצאה</small></span>
       </button>
     </div>
+    <div class="choice">
+      <div class="lbl">קלף שיצא</div>
+      <button class="opt" role="radio" aria-checked="true" data-rep="0" onclick="pickRep(this)">
+        <span class="tick"></span><span>נעלם מהחבילה<small>לא חוזר, עד שהקטגוריה נגמרת ונטרפת</small></span>
+      </button>
+      <button class="opt" role="radio" aria-checked="false" data-rep="1" onclick="pickRep(this)">
+        <span class="tick"></span><span>יכול לצאת שוב<small>כל השאלות בחבילה בכל שליפה</small></span>
+      </button>
+    </div>
     <button class="pill" id="btn-create" onclick="createRoom()">יוצאים לדרך</button>
     <div class="err" id="err-new"></div>
     <button class="linkbtn" onclick="go('s-home')">חזרה</button>
@@ -198,8 +253,10 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
   <section class="screen" id="s-lobby">
     <h1 class="title">מצטרפים למשחק</h1>
     <div class="codeshow" id="lobby-code">0000</div>
-    <div class="qrwrap"><img id="qr" alt="קוד QR להצטרפות"></div>
-    <p class="sub">סרקו את הקוד או הקישו את הספרות בכתובת<br><strong id="lobby-host">kubia.hotam.tech</strong></p>
+    <button class="pill" onclick="shareLink()">שליחת קישור למשתתפים</button>
+    <button class="pill ghost small" onclick="toggleQR()" id="btn-qr">או סריקת קוד QR</button>
+    <div class="qrwrap" id="qrwrap" style="display:none"><img id="qr" alt="קוד QR להצטרפות"></div>
+    <p class="sub">אפשר גם להקיש את הספרות בכתובת<br><strong id="lobby-host">kubia.hotam.tech</strong></p>
     <div class="count" id="lobby-count">מחוברים: 1</div>
     <button class="pill" onclick="startGame()">מתחילים לשחק</button>
   </section>
@@ -208,12 +265,23 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
   <section class="screen" id="s-table">
     <h1 class="title">תור חדש</h1>
     <p class="sub" id="table-sub">מי שבתורו מטיל, וכולם רואים יחד</p>
-    <div class="table-pad" id="pad-virtual">
+    <div class="table-pad" id="pad-virtual" onclick="doRoll()" role="button" aria-label="הטילו את הקובייה">
       <div class="die" id="die"></div>
     </div>
     <div class="physical" id="pad-physical" style="display:none"></div>
     <div class="rollres" id="rollres"></div>
     <button class="pill" id="btn-roll" onclick="doRoll()">הטילו את הקובייה</button>
+    <div class="tap-hint" id="tap-hint">אפשר גם ללחוץ ישר על הקובייה</div>
+  </section>
+
+  <!-- סיום -->
+  <section class="screen" id="s-ended">
+    <div class="endwrap">
+      <h1 class="title big">נעים להכיר</h1>
+      <div class="endnum" id="end-count">0</div>
+      <p class="sub" id="end-sub">שאלות שעניתם עליהן יחד</p>
+    </div>
+    <button class="pill" onclick="newGameFromEnd()">משחק חדש</button>
   </section>
 
   <!-- מניפה -->
@@ -268,7 +336,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const state = {
   code:null, room:null, seq:-1, screen:null, audience:"teachers", dice:"virtual",
   spinX:-24, spinY:32, channel:null, busy:false, animating:false,
-  qtext:new Map(), answered:0
+  qtext:new Map(), answered:0, repeat:false
 };
 
 /* ===== עזרים ===== */
@@ -311,13 +379,82 @@ function pickDice(btn){
   document.querySelectorAll("[data-dice]").forEach(b=>b.setAttribute("aria-checked","false"));
   btn.setAttribute("aria-checked","true"); state.dice=btn.dataset.dice;
 }
+function pickRep(btn){
+  document.querySelectorAll("[data-rep]").forEach(b=>b.setAttribute("aria-checked","false"));
+  btn.setAttribute("aria-checked","true"); state.repeat = btn.dataset.rep === "1";
+}
+
+/* ===== קישור הזמנה ===== */
+function roomLink(){
+  return location.origin + location.pathname + "?r=" + (state.code || "");
+}
+function openMenu(){
+  $("#sheet-code").innerHTML = "קוד החדר <b>" + esc(state.code||"") + "</b>";
+  $("#link-preview").textContent = roomLink().replace(/^https?:\/\//,"");
+  $("#sheet").classList.add("on"); $("#sheet-bg").classList.add("on");
+}
+function closeMenu(){ $("#sheet").classList.remove("on"); $("#sheet-bg").classList.remove("on"); }
+
+async function shareLink(){
+  const url = roomLink();
+  const text = "מצטרפים למשחק ההיכרות שלנו. קוד החדר " + state.code;
+  try{
+    if(navigator.share){ await navigator.share({ title:"עבר · הווה · עתיד", text, url }); closeMenu(); return; }
+  }catch(e){ if(e && e.name === "AbortError"){ return; } }
+  copyLink();
+}
+async function copyLink(){
+  const url = roomLink();
+  try{
+    await navigator.clipboard.writeText(url);
+    toast("הקישור הועתק. אפשר להדביק בוואטסאפ");
+  }catch(e){
+    const ta=document.createElement("textarea");
+    ta.value=url; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast("הקישור הועתק"); }
+    catch(_){ toast(url); }
+    ta.remove();
+  }
+  closeMenu();
+}
+function toggleQR(){
+  const w=$("#qrwrap"), show = w.style.display==="none";
+  w.style.display = show ? "block":"none";
+  $("#btn-qr").textContent = show ? "הסתרת קוד QR" : "או סריקת קוד QR";
+  if(show) drawQR();
+}
+function showQR(){
+  closeMenu();
+  if(state.screen!=="lobby"){ toast("קוד QR זמין בלובי. אפשר לשלוח קישור מכאן"); return; }
+  const w=$("#qrwrap"); w.style.display="block"; drawQR();
+  $("#btn-qr").textContent="הסתרת קוד QR";
+}
+function drawQR(){
+  $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=" + encodeURIComponent(roomLink());
+}
+
+/* ===== שליטה במשחק ===== */
+function toLobby(){ closeMenu(); guard(()=>rpc("kubia_to_lobby",{p_code:state.code,p_seq:state.seq})); }
+function endGame(){ closeMenu(); guard(()=>rpc("kubia_end",{p_code:state.code,p_seq:state.seq})); }
+function leaveGame(){
+  closeMenu();
+  if(state.channel){ sb.removeChannel(state.channel); state.channel=null; }
+  localStorage.removeItem("kubia_code");
+  state.code=null; state.seq=-1; state.screen=null; state.qtext.clear();
+  history.replaceState(null,"",location.pathname);
+  $("#chip").classList.add("hidden"); $("#menubtn").classList.add("hidden");
+  go("s-home"); toast("יצאת מהמשחק");
+}
+function newGameFromEnd(){ leaveGame(); go("s-new"); }
 
 /* ===== פתיחה והצטרפות ===== */
 async function createRoom(){
   if(state.busy) return; state.busy=true;
   $("#btn-create").disabled=true; $("#err-new").textContent="";
   try{
-    const code = await rpc("kubia_create_room",{p_audience:state.audience,p_dice_mode:state.dice});
+    const code = await rpc("kubia_create_room",
+      {p_audience:state.audience, p_dice_mode:state.dice, p_allow_repeat:state.repeat});
     localStorage.setItem("kubia_code", code);
     await enterRoom(code);
   }catch(e){
@@ -345,6 +482,7 @@ async function enterRoom(code, known){
   if(!s){ localStorage.removeItem("kubia_code"); go("s-home"); return; }
 
   $("#chip").classList.remove("hidden");
+  $("#menubtn").classList.remove("hidden");
   $("#die").innerHTML = dieFaces();
   buildPhysical();
 
@@ -405,14 +543,20 @@ function apply(s, initial){
   $("#pad-virtual").style.display = s.dice_mode==="physical" ? "none":"flex";
   $("#pad-physical").style.display = s.dice_mode==="physical" ? "grid":"none";
   $("#btn-roll").style.display = s.dice_mode==="physical" ? "none":"block";
+  $("#tap-hint").style.display = s.dice_mode==="physical" ? "none":"block";
   $("#table-sub").textContent = s.dice_mode==="physical"
     ? "הטילו את הקובייה בחדר והקישו על מה שיצא" : "מי שבתורו מטיל, וכולם רואים יחד";
 
+  if(s.screen==="ended"){
+    $("#end-count").textContent = state.answered;
+    $("#end-sub").textContent = state.answered === 1
+      ? "שאלה אחת שעניתם עליה יחד" : "שאלות שעניתם עליהן יחד";
+    go("s-ended"); return;
+  }
   if(s.screen==="lobby"){
     $("#lobby-code").textContent = s.code;
     $("#lobby-host").textContent = location.host || "kubia.hotam.tech";
-    const url = location.origin + location.pathname + "#" + s.code;
-    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=" + encodeURIComponent(url);
+    if($("#qrwrap").style.display !== "none") drawQR();
     go("s-lobby"); return;
   }
   if(s.screen==="table"){ $("#rollres").textContent=""; go("s-table"); return; }
@@ -506,9 +650,14 @@ const resolve   = a => guard(()=>rpc("kubia_resolve",{p_code:state.code,p_seq:st
 
 /* ===== עלייה ===== */
 (async function boot(){
-  const hash = (location.hash||"").replace("#","").trim();
-  const saved = localStorage.getItem("kubia_code");
-  const code = /^\d{4}$/.test(hash) ? hash : (/^\d{4}$/.test(saved||"") ? saved : null);
+  // קוד החדר יכול להגיע משלושה מקורות, בסדר הזה:
+  // ?r=1234 (קישור שנשלח), #1234 (קישורים ותיקים), ואחרון הזיכרון המקומי
+  const fromQuery = new URLSearchParams(location.search).get("r") || "";
+  const fromHash = (location.hash||"").replace("#","").trim();
+  const saved = localStorage.getItem("kubia_code") || "";
+  const code = /^\d{4}$/.test(fromQuery) ? fromQuery
+             : /^\d{4}$/.test(fromHash) ? fromHash
+             : /^\d{4}$/.test(saved) ? saved : null;
 
   const inputs=[...document.querySelectorAll("#codebox input")];
   inputs.forEach((inp,i)=>{

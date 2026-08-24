@@ -122,6 +122,10 @@ tr.hidden-q td{opacity:.45}
             <option value="virtual" selected>קובייה בטלפון</option>
             <option value="physical">קובייה אמיתית בחדר</option>
           </select>
+          <select id="g-rep">
+            <option value="0" selected>קלף שיצא נעלם</option>
+            <option value="1">קלף שיצא יכול לחזור</option>
+          </select>
           <button class="b ghost" id="btn-game">פתיחת משחק</button>
         </div>
       </div>
@@ -239,9 +243,9 @@ $("#btn-game").addEventListener("click",async()=>{
   $("#btn-game").disabled=true;
   try{
     const {data,error}=await sb.rpc("kubia_create_room",
-      {p_audience:$("#g-aud").value,p_dice_mode:$("#g-dice").value});
+      {p_audience:$("#g-aud").value, p_dice_mode:$("#g-dice").value, p_allow_repeat:$("#g-rep").value==="1"});
     if(error) throw error;
-    location.href="index.html#"+data;
+    location.href="index.html?r="+data;
   }catch(e){ msg("לא הצלחנו לפתוח משחק"); $("#btn-game").disabled=false; }
 });
 
