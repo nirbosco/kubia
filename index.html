@@ -87,10 +87,12 @@ p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-heig
 .face.right{transform:rotateY(90deg) translateZ(46px)} .face.left{transform:rotateY(-90deg) translateZ(46px)}
 .face.top{transform:rotateX(90deg) translateZ(46px)} .face.bottom{transform:rotateX(-90deg) translateZ(46px)}
 .rollres{min-height:28px;font-size:19px;font-weight:600;color:var(--blue);text-align:center}
-.physical{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:min(74vw,280px)}
-.physical button{aspect-ratio:1;border-radius:18px;border:2px solid var(--blue);background:#fff;color:var(--blue);
-  font-family:inherit;font-size:28px;font-weight:800;cursor:pointer}
-.physical button:active{background:var(--blue);color:#fff}
+.physical{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:min(78vw,300px)}
+.physical button{aspect-ratio:1;border-radius:16px;border:2px solid var(--blue);background:var(--blue);
+  cursor:pointer;padding:14%;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);
+  transition:transform .12s, box-shadow .12s; box-shadow:0 3px 0 #0035c4}
+.physical button:active{transform:translateY(3px);box-shadow:none}
+.physical button .pip{width:100%;height:100%;max-width:15px;max-height:15px;border-radius:50%;background:#fff;place-self:center;opacity:0}
 
 /* מניפה */
 .fan-zone{position:relative;width:100%;height:326px}
@@ -627,7 +629,10 @@ function buildPhysical(){
   const p=$("#pad-physical"); if(p.childElementCount) return;
   for(let f=1;f<=6;f++){
     const b=document.createElement("button");
-    b.textContent=f; b.onclick=()=>pickFace(f);
+    b.setAttribute("aria-label","יצא " + f);
+    b.innerHTML = Array.from({length:9},(_,i)=>
+      `<span class="pip" style="opacity:${PIPS[f].includes(i+1)?1:0}"></span>`).join("");
+    b.onclick=()=>pickFace(f);
     p.appendChild(b);
   }
 }
