@@ -349,6 +349,7 @@ async function enterRoom(code, known){
   buildPhysical();
 
   // קאש שאלות: מאפשר להציג את הקלף מיד מהשידור, בלי סבב נוסף לשרת
+  state.qtext.clear();
   try{
     const qs = await rpc("kubia_room_questions",{p_code:code});
     (qs||[]).forEach(q => state.qtext.set(q.id, q.text));
