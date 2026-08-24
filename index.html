@@ -2,302 +2,508 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>עבר · הווה · עתיד — מוקאפ עיצוב</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>עבר · הווה · עתיד</title>
+<meta name="theme-color" content="#0046ff">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --blue:#0046ff; --light:#0fb4f5; --turq:#23d7cd; --advot:#2882f0;
-  --deep:#3c5af0; --purple:#6437eb; --ink:#0a1330; --bg:#f0f0f0; --card:#ffffff;
+  --deep:#3c5af0; --purple:#6437eb; --ink:#0a1330; --bg:#f0f0f0; --card:#fff;
+  --line:#d4d4de; --muted:#5a5a68;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-html,body{margin:0; height:100%}
+html,body{margin:0; min-height:100%}
 body{
-  font-family:"Rubik",sans-serif; background:var(--bg); color:var(--ink);
+  font-family:"Rubik",system-ui,sans-serif; background:var(--bg); color:var(--ink);
   display:flex; flex-direction:column; min-height:100dvh; overflow-x:hidden;
 }
+header.top{display:flex; align-items:center; justify-content:space-between; padding:14px 18px; gap:10px; min-height:60px}
+.brand{display:flex; align-items:center; gap:9px; font-weight:800; font-size:16px; color:var(--blue)}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--blue); flex:none}
+.roomchip{border:1.5px solid var(--blue); color:var(--blue); border-radius:999px; padding:6px 13px; font-weight:600; font-size:13px; background:#fff; white-space:nowrap}
+.roomchip.hidden{display:none}
+main{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 16px 30px; width:100%; max-width:520px; margin:0 auto}
+footer.foot{padding:14px 18px 22px; text-align:center; font-size:13px; color:var(--muted); display:flex; gap:18px; justify-content:center; flex-wrap:wrap}
+footer.foot a{color:var(--muted); text-decoration:underline; text-underline-offset:3px}
 
-/* ===== מעטפת ===== */
-header.top{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 18px; gap:10px;
-}
-.brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px; color:var(--blue)}
-.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--blue)}
-.roomchip{
-  border:1.5px solid var(--blue); color:var(--blue); border-radius:999px;
-  padding:6px 14px; font-weight:600; font-size:14px; background:#fff;
-}
-main{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 16px 24px; width:100%; max-width:520px; margin:0 auto}
-
-/* ===== ניווט מוקאפ (לא חלק מהמוצר) ===== */
-nav.demo{
-  display:flex; gap:6px; justify-content:center; padding:10px; background:#fff;
-  border-top:1px solid #dcdce4; position:sticky; bottom:0; width:100%;
-}
-nav.demo button{
-  font-family:inherit; font-size:13px; font-weight:500; border-radius:999px;
-  border:1.5px solid #c6c6d2; background:#fff; color:#555; padding:8px 14px; cursor:pointer;
-}
-nav.demo button.on{border-color:var(--blue); color:var(--blue); font-weight:600}
-.demo-note{font-size:11px;color:#8a8a97;text-align:center;padding:4px 0 8px;background:#fff;width:100%}
-
-/* ===== כפתורים ===== */
-.pill{
-  font-family:inherit; cursor:pointer; border-radius:999px; font-weight:600;
-  padding:16px 30px; font-size:18px; border:2px solid var(--blue);
-  background:var(--blue); color:#fff; transition:transform .12s;
-}
-.pill:active{transform:scale(.96)}
+.pill{font-family:inherit; cursor:pointer; border-radius:999px; font-weight:600; padding:16px 30px; font-size:18px;
+  border:2px solid var(--blue); background:var(--blue); color:#fff; transition:transform .12s, opacity .2s; width:100%; max-width:340px}
+.pill:active{transform:scale(.97)}
+.pill:disabled{opacity:.5; cursor:default}
 .pill.ghost{background:#fff; color:var(--blue)}
-.pill.small{padding:11px 20px; font-size:15px}
+.pill.small{padding:12px 22px; font-size:15px}
+.linkbtn{background:none;border:none;font-family:inherit;font-size:14px;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px}
 
-.screen{display:none; width:100%; flex-direction:column; align-items:center; gap:22px}
+.screen{display:none; width:100%; flex-direction:column; align-items:center; gap:20px; animation:fade .3s}
 .screen.on{display:flex}
-h1.title{font-size:26px; font-weight:800; margin:0; text-align:center}
-p.sub{margin:0; color:#5a5a68; font-size:15px; text-align:center}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+h1.title{font-size:27px; font-weight:800; margin:0; text-align:center; line-height:1.25}
+h1.big{font-size:34px}
+p.sub{margin:0; color:var(--muted); font-size:15px; text-align:center; line-height:1.5; max-width:340px}
 
-/* ===== מסך 1: שולחן וקובייה ===== */
-.table-pad{
-  width:min(78vw,300px); aspect-ratio:1; border-radius:28px;
-  background:radial-gradient(circle at 50% 42%, #ffffff 0%, #e4e7f2 70%, #d6dae9 100%);
-  border:1.5px solid #d0d4e4;
-  display:flex; align-items:center; justify-content:center; perspective:900px;
-}
-.die{
-  width:96px; height:96px; position:relative; transform-style:preserve-3d;
-  transform:rotateX(-24deg) rotateY(32deg);
-  transition:transform 1.25s cubic-bezier(.2,.75,.25,1);
-}
-.face{
-  position:absolute; inset:0; background:var(--blue); border-radius:18px;
-  border:3px solid #fff; display:grid; grid-template:repeat(3,1fr)/repeat(3,1fr); padding:12px;
-  box-shadow:inset 0 0 22px rgba(0,0,0,.25);
-}
-.pip{width:14px;height:14px;border-radius:50%;background:#fff;place-self:center;opacity:0}
-.f1 .p5{opacity:1}
-.f2 .p1,.f2 .p9{opacity:1}
-.f3 .p1,.f3 .p5,.f3 .p9{opacity:1}
-.f4 .p1,.f4 .p3,.f4 .p7,.f4 .p9{opacity:1}
-.f5 .p1,.f5 .p3,.f5 .p5,.f5 .p7,.f5 .p9{opacity:1}
-.f6 .p1,.f6 .p3,.f6 .p4,.f6 .p6,.f6 .p7,.f6 .p9{opacity:1}
-.face.front {transform:translateZ(48px)}
-.face.back  {transform:rotateY(180deg) translateZ(48px)}
-.face.right {transform:rotateY(90deg) translateZ(48px)}
-.face.left  {transform:rotateY(-90deg) translateZ(48px)}
-.face.top   {transform:rotateX(90deg) translateZ(48px)}
-.face.bottom{transform:rotateX(-90deg) translateZ(48px)}
-.roll-result{min-height:30px; font-size:19px; font-weight:600; color:var(--blue); text-align:center}
-.physical{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; width:min(78vw,300px)}
-.physical button{
-  aspect-ratio:1; border-radius:18px; border:2px solid var(--blue); background:#fff;
-  color:var(--blue); font-family:inherit; font-size:30px; font-weight:800; cursor:pointer;
-}
-.mode-switch{font-size:13px; color:#5a5a68; text-decoration:underline; background:none; border:none; font-family:inherit; cursor:pointer}
+/* בית */
+.hero{display:flex; flex-direction:column; align-items:center; gap:6px; margin-bottom:6px}
+.hero .era{font-size:30px; font-weight:800; letter-spacing:-.5px}
+.hero .era span:nth-child(1){color:var(--blue)}
+.hero .era span:nth-child(2){color:var(--advot)}
+.hero .era span:nth-child(3){color:var(--purple)}
+.hero .sep{color:var(--line)}
 
-/* ===== מסך 2: מניפת קלפים ===== */
-.fan-zone{position:relative; width:100%; height:340px}
-.playcard{
-  position:absolute; width:150px; height:214px; border-radius:16px;
-  right:50%; top:24px; transform-origin:50% 118%;
-  border:3px solid #fff; box-shadow:0 8px 22px rgba(10,19,48,.22);
-  cursor:pointer; transition:transform .5s cubic-bezier(.3,.8,.3,1), opacity .4s;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
-  color:#fff; font-weight:800; overflow:hidden;
-}
-.playcard .mini-die{
-  width:34px;height:34px;border-radius:9px;background:var(--light);
-  border:2px solid #fff; display:grid; grid-template:repeat(3,1fr)/repeat(3,1fr); padding:4px;
-}
-.playcard .mini-die .pip{width:5px;height:5px}
-.playcard .catname{font-size:17px; text-align:center; line-height:1.3; text-shadow:0 1px 6px rgba(0,0,0,.3)}
-.cat-back-1,.cat-back-2{background:radial-gradient(circle at 50% 45%, #14328f 0%, var(--ink) 75%)}
-.cat-back-3,.cat-back-4{background:radial-gradient(circle at 50% 45%, #8f6bff 0%, var(--purple) 70%)}
-.cat-back-5,.cat-back-6{background:linear-gradient(180deg,#cdeefc 0%, #8fd4f4 55%, #ffe9b8 100%)}
-.cat-back-5 .catname,.cat-back-6 .catname{color:#0b4ea3; text-shadow:none}
-.rays{position:absolute; inset:-40%; background:repeating-conic-gradient(rgba(255,255,255,.14) 0 2deg, transparent 2deg 9deg); pointer-events:none}
-.cat-back-5 .rays,.cat-back-6 .rays{display:none}
+/* טופס פתיחה */
+.choice{width:100%; max-width:340px; display:flex; flex-direction:column; gap:9px}
+.choice > .lbl{font-size:14px; font-weight:600; color:var(--muted); margin-bottom:-2px}
+.opt{display:flex; align-items:center; gap:11px; border:1.5px solid var(--line); background:#fff; border-radius:16px; padding:14px 16px; cursor:pointer; font-size:16px; font-weight:500; text-align:right; font-family:inherit; width:100%; transition:border-color .15s}
+.opt .tick{width:19px;height:19px;border-radius:50%;border:2px solid var(--line); flex:none; position:relative}
+.opt[aria-checked="true"]{border-color:var(--blue)}
+.opt[aria-checked="true"] .tick{border-color:var(--blue)}
+.opt[aria-checked="true"] .tick::after{content:""; position:absolute; inset:3px; border-radius:50%; background:var(--blue)}
+.opt small{display:block; font-size:12.5px; color:var(--muted); font-weight:400; margin-top:2px}
 
-/* ===== מסך 3: קלף פתוח ===== */
-.flip-wrap{width:min(80vw,320px); height:440px; perspective:1200px}
-.flip-inner{width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .8s cubic-bezier(.3,.7,.3,1)}
+/* הצטרפות */
+.codebox{display:flex; gap:9px; direction:ltr}
+.codebox input{width:60px; height:74px; text-align:center; font-family:inherit; font-size:32px; font-weight:800; color:var(--ink);
+  border:2px solid var(--line); border-radius:16px; background:#fff; -moz-appearance:textfield}
+.codebox input:focus{border-color:var(--blue); outline:none}
+.codebox input::-webkit-outer-spin-button,.codebox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* לובי */
+.codeshow{font-size:64px; font-weight:800; letter-spacing:10px; color:var(--blue); direction:ltr; line-height:1}
+.qrwrap{background:#fff; padding:14px; border-radius:20px; border:1.5px solid var(--line)}
+.qrwrap img,.qrwrap canvas{display:block; width:190px; height:190px}
+.count{font-size:15px; color:var(--muted)}
+
+/* שולחן */
+.table-pad{width:min(74vw,280px); aspect-ratio:1; border-radius:28px;
+  background:radial-gradient(circle at 50% 42%, #fff 0%, #e4e7f2 70%, #d6dae9 100%);
+  border:1.5px solid #d0d4e4; display:flex; align-items:center; justify-content:center; perspective:900px}
+.die{width:92px;height:92px;position:relative;transform-style:preserve-3d;transform:rotateX(-24deg) rotateY(32deg);transition:transform 1.25s cubic-bezier(.2,.75,.25,1)}
+.face{position:absolute;inset:0;background:var(--blue);border-radius:18px;border:3px solid #fff;
+  display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:11px;box-shadow:inset 0 0 22px rgba(0,0,0,.25)}
+.pip{width:13px;height:13px;border-radius:50%;background:#fff;place-self:center;opacity:0}
+.face.front{transform:translateZ(46px)} .face.back{transform:rotateY(180deg) translateZ(46px)}
+.face.right{transform:rotateY(90deg) translateZ(46px)} .face.left{transform:rotateY(-90deg) translateZ(46px)}
+.face.top{transform:rotateX(90deg) translateZ(46px)} .face.bottom{transform:rotateX(-90deg) translateZ(46px)}
+.rollres{min-height:28px;font-size:19px;font-weight:600;color:var(--blue);text-align:center}
+.physical{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:min(74vw,280px)}
+.physical button{aspect-ratio:1;border-radius:18px;border:2px solid var(--blue);background:#fff;color:var(--blue);
+  font-family:inherit;font-size:28px;font-weight:800;cursor:pointer}
+.physical button:active{background:var(--blue);color:#fff}
+
+/* מניפה */
+.fan-zone{position:relative;width:100%;height:326px}
+.playcard{position:absolute;width:146px;height:208px;border-radius:16px;right:50%;top:20px;transform-origin:50% 118%;
+  border:3px solid #fff;box-shadow:0 8px 22px rgba(10,19,48,.22);cursor:pointer;
+  transition:transform .5s cubic-bezier(.3,.8,.3,1),opacity .4s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;color:#fff;font-weight:800;overflow:hidden}
+.mini-die{width:32px;height:32px;border-radius:9px;background:var(--light);border:2px solid #fff;
+  display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:4px;flex:none}
+.mini-die .pip{width:5px;height:5px}
+.catname{font-size:16px;text-align:center;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+.cat-1,.cat-2{background:radial-gradient(circle at 50% 45%,#14328f 0%,var(--ink) 75%)}
+.cat-3,.cat-4{background:radial-gradient(circle at 50% 45%,#8f6bff 0%,var(--purple) 70%)}
+.cat-5,.cat-6{background:linear-gradient(180deg,#cdeefc 0%,#8fd4f4 55%,#ffe9b8 100%)}
+.cat-5 .catname,.cat-6 .catname{color:#0b4ea3;text-shadow:none}
+.rays{position:absolute;inset:-40%;background:repeating-conic-gradient(rgba(255,255,255,.14) 0 2deg,transparent 2deg 9deg);pointer-events:none}
+.cat-5 .rays,.cat-6 .rays{display:none}
+
+/* קלף פתוח */
+.flip-wrap{width:min(80vw,320px);height:428px;perspective:1200px}
+.flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.3,1)}
 .flip-inner.revealed{transform:rotateY(180deg)}
-.flip-face{
-  position:absolute; inset:0; backface-visibility:hidden; border-radius:22px;
-  border:4px solid #fff; box-shadow:0 14px 34px rgba(10,19,48,.24);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:26px; overflow:hidden;
-}
-.flip-front{transform:rotateY(180deg); color:#fff; text-align:center}
-.flip-front .qcat{
-  border:1.5px solid rgba(255,255,255,.85); border-radius:999px; padding:5px 16px;
-  font-size:13px; font-weight:500; background:rgba(255,255,255,.14)
-}
-.flip-front .qtext{font-size:31px; font-weight:800; line-height:1.35; text-wrap:balance}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;border:4px solid #fff;
+  box-shadow:0 14px 34px rgba(10,19,48,.24);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:26px;overflow:hidden}
+.flip-front{transform:rotateY(180deg);color:#fff;text-align:center}
+.qcat{border:1.5px solid rgba(255,255,255,.85);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:500;background:rgba(255,255,255,.14)}
+.qtext{font-size:30px;font-weight:800;line-height:1.35;text-wrap:balance}
 .qf-1{background:var(--blue)} .qf-2{background:var(--deep)}
-.qf-3,.qf-4{background:var(--purple)}
-.qf-5{background:var(--advot)} .qf-6{background:var(--light)}
-.actions{display:flex; flex-direction:column; gap:10px; width:min(80vw,320px)}
+.qf-3,.qf-4{background:var(--purple)} .qf-5{background:var(--advot)} .qf-6{background:var(--light)}
+.actions{display:flex;flex-direction:column;gap:9px;width:min(80vw,320px)}
+
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;
+  padding:13px 22px;border-radius:999px;font-size:14.5px;font-weight:500;opacity:0;transition:.35s;pointer-events:none;z-index:99;max-width:88vw;text-align:center}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.err{color:#c0392b;font-size:14px;min-height:20px;text-align:center}
+.spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){
+  .die,.flip-inner,.playcard{transition-duration:.01s !important}
+  .screen{animation:none}
+}
 </style>
 </head>
 <body>
 
 <header class="top">
   <div class="brand"><span class="dot"></span>עבר · הווה · עתיד</div>
-  <div class="roomchip">חדר 4271 · 6 מחוברים</div>
+  <div class="roomchip hidden" id="chip"></div>
 </header>
 
 <main>
+  <!-- בית -->
+  <section class="screen on" id="s-home">
+    <div class="hero">
+      <div class="era"><span>עבר</span> <span class="sep">·</span> <span>הווה</span> <span class="sep">·</span> <span>עתיד</span></div>
+    </div>
+    <p class="sub">משחק היכרות בקלפים. אחד מטיל קובייה, כולם רואים את אותה חבילה בטלפון.</p>
+    <button class="pill" onclick="go('s-new')">פתחו משחק חדש</button>
+    <button class="pill ghost" onclick="go('s-join')">הצטרפו עם קוד</button>
+  </section>
 
-  <!-- מסך 1: שולחן -->
-  <section class="screen on" id="s-table">
+  <!-- פתיחת משחק -->
+  <section class="screen" id="s-new">
+    <h1 class="title">משחק חדש</h1>
+    <div class="choice">
+      <div class="lbl">מי סביב השולחן?</div>
+      <button class="opt" role="radio" aria-checked="true" data-aud="teachers" onclick="pickAud(this)">
+        <span class="tick"></span><span>מורים ואנשי שטח<small>שאלות על כיתה, תלמידים ובית ספר</small></span>
+      </button>
+      <button class="opt" role="radio" aria-checked="false" data-aud="leaders" onclick="pickAud(this)">
+        <span class="tick"></span><span>מובילי ומנהלי תוכניות<small>שאלות על צוות, תוכניות והובלה</small></span>
+      </button>
+    </div>
+    <div class="choice">
+      <div class="lbl">איך מטילים?</div>
+      <button class="opt" role="radio" aria-checked="true" data-dice="virtual" onclick="pickDice(this)">
+        <span class="tick"></span><span>קובייה בטלפון<small>אנימציה, וכולם רואים את התוצאה</small></span>
+      </button>
+      <button class="opt" role="radio" aria-checked="false" data-dice="physical" onclick="pickDice(this)">
+        <span class="tick"></span><span>קובייה אמיתית בחדר<small>מקישים על הספרה שיצאה</small></span>
+      </button>
+    </div>
+    <button class="pill" id="btn-create" onclick="createRoom()">יוצאים לדרך</button>
+    <div class="err" id="err-new"></div>
+    <button class="linkbtn" onclick="go('s-home')">חזרה</button>
+  </section>
+
+  <!-- הצטרפות -->
+  <section class="screen" id="s-join">
+    <h1 class="title">הצטרפות למשחק</h1>
+    <p class="sub">הקישו את ארבע הספרות שמופיעות על המסך של מי שפתח</p>
+    <div class="codebox" id="codebox">
+      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]">
+    </div>
+    <button class="pill" id="btn-join" onclick="joinRoom()">מצטרפים</button>
+    <div class="err" id="err-join"></div>
+    <button class="linkbtn" onclick="go('s-home')">חזרה</button>
+  </section>
+
+  <!-- לובי -->
+  <section class="screen" id="s-lobby">
+    <h1 class="title">מצטרפים למשחק</h1>
+    <div class="codeshow" id="lobby-code">0000</div>
+    <div class="qrwrap"><img id="qr" alt="קוד QR להצטרפות"></div>
+    <p class="sub">סרקו את הקוד או הקישו את הספרות בכתובת<br><strong id="lobby-host">kubia.hotam.tech</strong></p>
+    <div class="count" id="lobby-count">מחוברים: 1</div>
+    <button class="pill" onclick="startGame()">מתחילים לשחק</button>
+  </section>
+
+  <!-- שולחן -->
+  <section class="screen" id="s-table">
     <h1 class="title">תור חדש</h1>
     <p class="sub" id="table-sub">מי שבתורו מטיל, וכולם רואים יחד</p>
-    <div class="table-pad" id="virtual-pad">
-      <div class="die" id="die">
-        <div class="face front  f1"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-        <div class="face back   f6"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-        <div class="face right  f3"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-        <div class="face left   f4"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-        <div class="face top    f2"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-        <div class="face bottom f5"><span class="pip p1"></span><span class="pip p2"></span><span class="pip p3"></span><span class="pip p4"></span><span class="pip p5"></span><span class="pip p6"></span><span class="pip p7"></span><span class="pip p8"></span><span class="pip p9"></span></div>
-      </div>
+    <div class="table-pad" id="pad-virtual">
+      <div class="die" id="die"></div>
     </div>
-    <div class="physical" id="physical-pad" style="display:none">
-      <button onclick="pickFace(1)">1</button><button onclick="pickFace(2)">2</button><button onclick="pickFace(3)">3</button>
-      <button onclick="pickFace(4)">4</button><button onclick="pickFace(5)">5</button><button onclick="pickFace(6)">6</button>
-    </div>
-    <div class="roll-result" id="roll-result"></div>
-    <button class="pill" id="roll-btn" onclick="roll()">הטילו את הקובייה</button>
-    <button class="mode-switch" onclick="toggleMode()" id="mode-btn">יש לכם קובייה אמיתית בחדר? עברו למצב קובייה פיזית</button>
+    <div class="physical" id="pad-physical" style="display:none"></div>
+    <div class="rollres" id="rollres"></div>
+    <button class="pill" id="btn-roll" onclick="doRoll()">הטילו את הקובייה</button>
   </section>
 
-  <!-- מסך 2: מניפה -->
-  <section class="screen" id="s-fan">
-    <h1 class="title" id="fan-title">הווה אישי</h1>
+  <!-- מניפה -->
+  <section class="screen" id="s-deck">
+    <h1 class="title" id="deck-title">הווה אישי</h1>
     <p class="sub">בחרו קלף מהחבילה</p>
-    <div class="fan-zone" id="fan-zone"></div>
+    <div class="fan-zone" id="fan"></div>
   </section>
 
-  <!-- מסך 3: קלף פתוח -->
+  <!-- קלף -->
   <section class="screen" id="s-card">
     <div class="flip-wrap">
-      <div class="flip-inner" id="flip-inner">
-        <div class="flip-face playcard-back" id="flip-back"></div>
+      <div class="flip-inner" id="flip">
+        <div class="flip-face" id="flip-back"></div>
         <div class="flip-face flip-front" id="flip-front">
-          <span class="qcat" id="qcat">הווה אישי</span>
-          <div class="qtext" id="qtext">הזמן האהוב עליי ביום</div>
+          <span class="qcat" id="qcat"></span>
+          <div class="qtext" id="qtext"></div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <button class="pill" onclick="go('s-table')">עניתי, ממשיכים</button>
-      <button class="pill ghost small" onclick="openFan(state.cat)">קלף אחר</button>
-      <button class="pill ghost small" onclick="go('s-table')">הטלה מחדש</button>
+      <button class="pill" onclick="resolve('answered')">עניתי, ממשיכים</button>
+      <button class="pill ghost small" onclick="resolve('swap')">קלף אחר</button>
+      <button class="pill ghost small" onclick="resolve('reroll')">הטלה מחדש</button>
     </div>
   </section>
-
 </main>
 
-<nav class="demo">
-  <button class="on" onclick="demoNav('s-table',this)">שולחן</button>
-  <button onclick="demoNav('s-fan',this); openFan(5,true)">חבילה</button>
-  <button onclick="demoNav('s-card',this); showCard(5,'הזמן האהוב עליי ביום',true)">קלף פתוח</button>
-</nav>
-<div class="demo-note">סרגל תחתון זה קיים רק במוקאפ, לדפדוף בין המסכים</div>
+<footer class="foot" id="foot">
+  <a href="עבר-הווה-עתיד-להדפסה.pdf" download>הורדת החבילה להדפסה</a>
+  <a href="dashboard.html">מאגר השאלות</a>
+</footer>
 
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 "use strict";
-const CATS = {1:"עבר אישי",2:"עבר מקצועי",3:"עתיד מקצועי",4:"עתיד אישי",5:"הווה אישי",6:"הווה מקצועי"};
-const SAMPLE = {
-  1:["העבודה הכי מהנה שעשיתי","תחביב שזנחתי","ההחלטה הכי טובה שקיבלתי"],
-  2:["כיתה שאזכור לנצח","מנטור מקצועי שאימצתי","התלמידים שלי יגידו עליי ש..."],
-  3:["עוד 10 שנים אני רוצה להיות","אם אעשה הסבה זה יהיה ל..."],
-  4:["מקום שאני חייב.ת לבקר בו בעולם","משהו שארצה ללמוד / לחקור"],
-  5:["הזמן האהוב עליי ביום","תחביב מפתיע שיש לי","הרגלי שתיית הקפה שלי","חדשות או נטפליקס"],
-  6:["למה אני פה?","החלק האהוב עליי בתפקיד","הצוות שלי יגיד עליי ש..."]
-};
-/* סיבוב שמביא כל פאה לחזית */
-const ORIENT = {1:[0,0],2:[-90,0],3:[0,-90],4:[0,90],5:[90,0],6:[0,180]};
-const state = {cat:5, physical:false, rolling:false, spinX:-24, spinY:32};
-const $ = s => document.querySelector(s);
-const PIPS = {1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]};
-function miniDie(cat){
-  const cells = Array.from({length:9},(_,i)=>`<span class="pip" style="opacity:${PIPS[cat].includes(i+1)?1:0}"></span>`).join("");
-  return `<div class="mini-die">${cells}</div>`;
-}
 
+/* ===== חיבור ===== */
+const SB_URL = "https://ndrhiikczkbosentclnh.supabase.co";
+const SB_KEY = "sb_publishable_EckoZz1eIoRjjjQ9XhXhzA_EpuKVWQG";
+const sb = window.supabase.createClient(SB_URL, SB_KEY, { realtime: { params: { eventsPerSecond: 20 } } });
+
+const CATS = {1:"עבר אישי",2:"עבר מקצועי",3:"עתיד מקצועי",4:"עתיד אישי",5:"הווה אישי",6:"הווה מקצועי"};
+const PIPS = {1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]};
+const ORIENT = {1:[0,0],2:[-90,0],3:[0,-90],4:[0,90],5:[90,0],6:[0,180]};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const state = {
+  code:null, room:null, seq:-1, screen:null, audience:"teachers", dice:"virtual",
+  spinX:-24, spinY:32, channel:null, busy:false, animating:false
+};
+
+/* ===== עזרים ===== */
 function go(id){
   document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));
   $("#"+id).classList.add("on");
+  const inGame = ["s-lobby","s-table","s-deck","s-card"].includes(id);
+  $("#foot").style.display = inGame ? "none" : "flex";
 }
-function demoNav(id, btn){
-  document.querySelectorAll("nav.demo button").forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");
-  if(id==="s-table"){ go(id); }
+let toastT;
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("on");
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),3200);
 }
-function toggleMode(){
-  state.physical = !state.physical;
-  $("#virtual-pad").style.display = state.physical ? "none" : "flex";
-  $("#roll-btn").style.display   = state.physical ? "none" : "inline-block";
-  $("#physical-pad").style.display = state.physical ? "grid" : "none";
-  $("#mode-btn").textContent = state.physical ? "חזרה לקובייה וירטואלית" : "יש לכם קובייה אמיתית בחדר? עברו למצב קובייה פיזית";
-  $("#table-sub").textContent = state.physical ? "הטילו את הקובייה בחדר והקישו על מה שיצא" : "מי שבתורו מטיל, וכולם רואים יחד";
+async function rpc(fn, args){
+  const { data, error } = await sb.rpc(fn, args);
+  if (error) throw new Error(error.message || "network");
+  return data;
 }
-function roll(){
-  if(state.rolling) return;
-  state.rolling = true;
-  $("#roll-result").textContent = "";
-  const face = 1 + Math.floor(Math.random()*6);
-  const [ox, oy] = ORIENT[face];
-  state.spinX += 360*2; state.spinY += 360*2;
-  const die = $("#die");
-  die.style.transform = `rotateX(${state.spinX + ox}deg) rotateY(${state.spinY + oy}deg)`;
+function dieFaces(){
+  const names=["front","back","right","left","top","bottom"];
+  const faceFor={front:1,back:6,right:3,left:4,top:2,bottom:5};
+  return names.map(n=>{
+    const f=faceFor[n];
+    const pips=Array.from({length:9},(_,i)=>`<span class="pip" style="opacity:${PIPS[f].includes(i+1)?1:0}"></span>`).join("");
+    return `<div class="face ${n}">${pips}</div>`;
+  }).join("");
+}
+function miniDie(cat){
+  const cells=Array.from({length:9},(_,i)=>`<span class="pip" style="opacity:${PIPS[cat].includes(i+1)?1:0}"></span>`).join("");
+  return `<div class="mini-die">${cells}</div>`;
+}
+
+/* ===== בחירות בפתיחה ===== */
+function pickAud(btn){
+  document.querySelectorAll("[data-aud]").forEach(b=>b.setAttribute("aria-checked","false"));
+  btn.setAttribute("aria-checked","true"); state.audience=btn.dataset.aud;
+}
+function pickDice(btn){
+  document.querySelectorAll("[data-dice]").forEach(b=>b.setAttribute("aria-checked","false"));
+  btn.setAttribute("aria-checked","true"); state.dice=btn.dataset.dice;
+}
+
+/* ===== פתיחה והצטרפות ===== */
+async function createRoom(){
+  if(state.busy) return; state.busy=true;
+  $("#btn-create").disabled=true; $("#err-new").textContent="";
+  try{
+    const code = await rpc("kubia_create_room",{p_audience:state.audience,p_dice_mode:state.dice});
+    localStorage.setItem("kubia_code", code);
+    await enterRoom(code);
+  }catch(e){
+    $("#err-new").textContent="לא הצלחנו לפתוח משחק. בדקו חיבור לאינטרנט ונסו שוב.";
+  }finally{ state.busy=false; $("#btn-create").disabled=false; }
+}
+async function joinRoom(){
+  const code=[...document.querySelectorAll("#codebox input")].map(i=>i.value).join("");
+  if(!/^\d{4}$/.test(code)){ $("#err-join").textContent="צריך ארבע ספרות"; return; }
+  if(state.busy) return; state.busy=true;
+  $("#btn-join").disabled=true; $("#err-join").textContent="";
+  try{
+    const s = await rpc("kubia_get_state",{p_code:code});
+    if(!s){ $("#err-join").textContent="לא מצאנו משחק עם הקוד הזה"; return; }
+    localStorage.setItem("kubia_code", code);
+    await enterRoom(code, s);
+  }catch(e){
+    $("#err-join").textContent="לא הצלחנו להצטרף. בדקו חיבור ונסו שוב.";
+  }finally{ state.busy=false; $("#btn-join").disabled=false; }
+}
+
+async function enterRoom(code, known){
+  state.code = code;
+  const s = known || await rpc("kubia_get_state",{p_code:code});
+  if(!s){ localStorage.removeItem("kubia_code"); go("s-home"); return; }
+
+  $("#chip").classList.remove("hidden");
+  $("#die").innerHTML = dieFaces();
+  buildPhysical();
+  subscribe(s.id);
+  apply(s, true);
+  setInterval(()=>{ if(state.code) rpc("kubia_get_state",{p_code:state.code}).then(x=>x&&apply(x)).catch(()=>{}); }, 25000);
+}
+
+/* ===== סנכרון ===== */
+function subscribe(roomId){
+  if(state.channel) sb.removeChannel(state.channel);
+  const ch = sb.channel("kubia:"+roomId, { config:{ presence:{ key: Math.random().toString(36).slice(2) } } });
+  ch.on("postgres_changes",
+      { event:"UPDATE", schema:"public", table:"kubia_rooms", filter:"id=eq."+roomId },
+      payload => { pull(); })
+    .on("presence",{event:"sync"},()=>{
+      const n = Object.keys(ch.presenceState()).length;
+      $("#lobby-count").textContent = "מחוברים: " + n;
+      $("#chip").textContent = "חדר " + state.code + " · " + n + " מחוברים";
+    })
+    .subscribe(async st=>{ if(st==="SUBSCRIBED") await ch.track({ at: Date.now() }); });
+  state.channel = ch;
+}
+async function pull(){
+  try{ const s = await rpc("kubia_get_state",{p_code:state.code}); if(s) apply(s); }catch(e){}
+}
+
+/* ===== החלת מצב, כולל אנימציות ===== */
+function apply(s, initial){
+  if(!initial && s.seq <= state.seq) return;
+  const prevScreen = state.screen;
+  const prevSeq = state.seq;
+  state.room=s; state.seq=s.seq; state.screen=s.screen;
+  $("#chip").textContent = "חדר " + s.code + (s.answered_count ? " · נענו " + s.answered_count : "");
+  $("#pad-virtual").style.display = s.dice_mode==="physical" ? "none":"flex";
+  $("#pad-physical").style.display = s.dice_mode==="physical" ? "grid":"none";
+  $("#btn-roll").style.display = s.dice_mode==="physical" ? "none":"block";
+  $("#table-sub").textContent = s.dice_mode==="physical"
+    ? "הטילו את הקובייה בחדר והקישו על מה שיצא" : "מי שבתורו מטיל, וכולם רואים יחד";
+
+  if(s.screen==="lobby"){
+    $("#lobby-code").textContent = s.code;
+    $("#lobby-host").textContent = location.host || "kubia.hotam.tech";
+    const url = location.origin + location.pathname + "#" + s.code;
+    $("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=" + encodeURIComponent(url);
+    go("s-lobby"); return;
+  }
+  if(s.screen==="table"){ $("#rollres").textContent=""; go("s-table"); return; }
+
+  if(s.screen==="deck"){
+    if(prevScreen==="table" && s.dice_mode==="virtual" && !initial){
+      animateRoll(s.category, ()=>openFan(s.category));
+    }else if(prevScreen==="table" && s.dice_mode==="physical" && !initial){
+      $("#rollres").textContent = s.category + " · " + CATS[s.category];
+      setTimeout(()=>openFan(s.category), 600);
+    }else{
+      openFan(s.category);
+    }
+    return;
+  }
+  if(s.screen==="card"){
+    showCard(s.category, s.question_text, initial || prevScreen!=="deck");
+    return;
+  }
+}
+
+function animateRoll(face, done){
+  state.animating=true;
+  go("s-table"); $("#rollres").textContent="";
+  const [ox,oy]=ORIENT[face];
+  state.spinX += 720; state.spinY += 720;
+  $("#die").style.transform = `rotateX(${state.spinX+ox}deg) rotateY(${state.spinY+oy}deg)`;
   setTimeout(()=>{
-    $("#roll-result").textContent = face + " · " + CATS[face];
-    setTimeout(()=>{ state.rolling=false; openFan(face); }, 750);
+    $("#rollres").textContent = face + " · " + CATS[face];
+    setTimeout(()=>{ state.animating=false; done && done(); }, 700);
   }, 1300);
 }
-function pickFace(face){
-  $("#roll-result").textContent = face + " · " + CATS[face];
-  setTimeout(()=>openFan(face), 550);
-}
-function openFan(cat, noNav){
-  state.cat = cat;
-  $("#fan-title").textContent = CATS[cat];
-  const zone = $("#fan-zone");
-  zone.innerHTML = "";
-  const n = 7;
+
+function openFan(cat){
+  $("#deck-title").textContent = CATS[cat];
+  const zone=$("#fan"); zone.innerHTML="";
+  const n=7;
   for(let i=0;i<n;i++){
-    const c = document.createElement("div");
-    c.className = "playcard cat-back-"+cat;
-    const ang = -27 + i*(54/(n-1));
-    c.style.transform = `translateX(50%) rotate(${ang}deg)`;
-    c.innerHTML = `<div class="rays"></div>${miniDie(cat)}<div class="catname">${CATS[cat].replace(" ","<br>")}</div>`;
-    c.onclick = () => {
-      c.style.transform = `translateX(50%) rotate(0deg) translateY(-46px) scale(1.06)`;
-      const qs = SAMPLE[cat];
-      const q = qs[Math.floor(Math.random()*qs.length)];
-      setTimeout(()=>showCard(cat, q), 420);
+    const c=document.createElement("div");
+    c.className="playcard cat-"+cat;
+    const ang=-27 + i*(54/(n-1));
+    c.style.transform=`translateX(50%) rotate(${ang}deg)`;
+    c.innerHTML=`<div class="rays"></div>${miniDie(cat)}<div class="catname">${esc(CATS[cat]).replace(" ","<br>")}</div>`;
+    c.onclick=()=>{
+      c.style.transform=`translateX(50%) rotate(0deg) translateY(-46px) scale(1.06)`;
+      doDraw();
     };
     zone.appendChild(c);
   }
-  go("s-fan");
+  go("s-deck");
 }
-function showCard(cat, q, instant){
-  const inner = $("#flip-inner");
-  inner.classList.remove("revealed");
-  const back = $("#flip-back");
-  back.className = "flip-face playcard cat-back-"+cat;
-  back.style.position = "absolute";
-  back.innerHTML = `<div class="rays"></div>${miniDie(cat)}<div class="catname">${CATS[cat].replace(" ","<br>")}</div>`;
-  $("#flip-front").className = "flip-face flip-front qf-"+cat;
-  $("#qcat").textContent = CATS[cat];
-  $("#qtext").textContent = q;
+
+function showCard(cat, text, instant){
+  const inner=$("#flip"); inner.classList.remove("revealed");
+  const back=$("#flip-back");
+  back.className="flip-face playcard cat-"+cat;
+  back.style.position="absolute";
+  back.innerHTML=`<div class="rays"></div>${miniDie(cat)}<div class="catname">${esc(CATS[cat]).replace(" ","<br>")}</div>`;
+  $("#flip-front").className="flip-face flip-front qf-"+cat;
+  $("#qcat").textContent=CATS[cat];
+  $("#qtext").textContent=text || "";
   go("s-card");
-  setTimeout(()=>inner.classList.add("revealed"), instant ? 60 : 350);
+  setTimeout(()=>inner.classList.add("revealed"), instant?60:340);
 }
+
+/* ===== פעולות ===== */
+function buildPhysical(){
+  const p=$("#pad-physical"); if(p.childElementCount) return;
+  for(let f=1;f<=6;f++){
+    const b=document.createElement("button");
+    b.textContent=f; b.onclick=()=>pickFace(f);
+    p.appendChild(b);
+  }
+}
+async function guard(fn){
+  if(state.busy || state.animating) return;
+  state.busy=true;
+  try{ const s=await fn(); if(s) apply(s); }
+  catch(e){ toast("הפעולה לא עברה. בודקים חיבור ומנסים שוב"); pull(); }
+  finally{ state.busy=false; }
+}
+const startGame = ()=> guard(()=>rpc("kubia_start",{p_code:state.code,p_seq:state.seq}));
+const doRoll    = ()=> guard(()=>rpc("kubia_roll",{p_code:state.code,p_seq:state.seq}));
+const pickFace  = f => guard(()=>rpc("kubia_pick_face",{p_code:state.code,p_seq:state.seq,p_face:f}));
+const doDraw    = ()=> guard(async ()=>{
+  const s = await rpc("kubia_draw",{p_code:state.code,p_seq:state.seq});
+  if(s && s.reshuffled) toast("עברתם על כל השאלות בקטגוריה. טרפנו מחדש");
+  return s;
+});
+const resolve   = a => guard(()=>rpc("kubia_resolve",{p_code:state.code,p_seq:state.seq,p_action:a}));
+
+/* ===== עלייה ===== */
+(async function boot(){
+  const hash = (location.hash||"").replace("#","").trim();
+  const saved = localStorage.getItem("kubia_code");
+  const code = /^\d{4}$/.test(hash) ? hash : (/^\d{4}$/.test(saved||"") ? saved : null);
+
+  const inputs=[...document.querySelectorAll("#codebox input")];
+  inputs.forEach((inp,i)=>{
+    inp.addEventListener("input",()=>{
+      inp.value=inp.value.replace(/\D/g,"").slice(0,1);
+      if(inp.value && i<3) inputs[i+1].focus();
+      if(inputs.every(x=>x.value)) joinRoom();
+    });
+    inp.addEventListener("keydown",e=>{ if(e.key==="Backspace" && !inp.value && i>0) inputs[i-1].focus(); });
+  });
+
+  if(code){
+    try{
+      const s=await rpc("kubia_get_state",{p_code:code});
+      if(s){ await enterRoom(code,s); return; }
+      localStorage.removeItem("kubia_code");
+    }catch(e){}
+  }
+  go("s-home");
+})();
 </script>
 </body>
 </html>
